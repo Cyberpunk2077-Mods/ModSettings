@@ -1,0 +1,47 @@
+name: Build Mod Package
+on:
+  push:
+    branches: ["**"]
+    tags: ["v*"]
+  workflow_dispatch:
+permissions:
+  contents: write
+env:
+  TARGET_PLATFORM: windows
+  TARGET_ARCH: x64
+  # Reserved, disabled targets: windows_arm, macos_x64, macos_arm, linux_x64, linux_arm.
+  MOD_NAME: ModSettings
+jobs:
+  package:
+    runs-on: windows-2025
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+      - uses: ilammy/msvc-dev-cmd@v1.13.0
+        with:
+          arch: amd64
+      - name: Build windows_x64
+        run: |
+          cmake -S . -B build -A x64 -DCMAKE_CI_BUILD=ON -DGITHUB_ENV="$env:GITHUB_ENV"
+          cmake --build build --config RelWithDebInfo
+      - name: Package
+        id: meta
+        shell: pwsh
+        run: |
+          $version = if ($env:GITHUB_REF_TYPE -eq 'tag') { $env:GITHUB_REF_NAME.TrimStart('v') } else { '0.0.0' }
+          $suffix = if ($env:GITHUB_REF_TYPE -eq 'tag') { '' } else { "_$(Get-Date -Format 'yyyy.M').$((git rev-list --count --since="$(Get-Date -Day 1 -Format yyyy-MM-dd)" HEAD))" }
+          $artifact = "${env:MOD_NAME}_v${version}_${env:TARGET_PLATFORM}_${env:TARGET_ARCH}${suffix}.zip"
+          Compress-Archive -Path game_dir/* -DestinationPath $artifact -CompressionLevel Optimal -Force
+          "artifact=$artifact" >> $env:GITHUB_OUTPUT
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.meta.outputs.artifact }}
+          path: ${{ steps.meta.outputs.artifact }}
+          if-no-files-found: error
+      - name: Create draft release
+        if: github.ref_type == 'tag'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$env:GITHUB_REF_NAME" "${{ steps.meta.outputs.artifact }}" --draft --generate-notes --verify-tag

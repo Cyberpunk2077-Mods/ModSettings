@@ -6,7 +6,7 @@
 	url = https://github.com/microsoft/Detours.git
 [submodule "deps/red4ext.sdk"]
 	path = deps/red4ext.sdk
-	url = https://github.com/jackhumbert/RED4ext.SDK.git
+	url = https://github.com/WopsS/RED4ext.SDK.git
 [submodule "deps/cpcmake"]
 	path = deps/cpcmake
 	url = https://github.com/jackhumbert/cyberpunk_cmake.git
@@ -15,4 +15,4 @@
 	url = https://github.com/psiberx/cp2077-archive-xl.git
 [submodule "deps/red_lib"]
 	path = deps/red_lib
-	url = https://github.com/jackhumbert/cp2077-red-lib.git
+	url = https://github.com/psiberx/cp2077-red-lib.git
