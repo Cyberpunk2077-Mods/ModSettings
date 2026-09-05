@@ -199,7 +199,11 @@ void ModClass::UnregisterListener(const Handle<IScriptable> &listener) {
   std::unique_lock _(*this->listeners_lock);
 
   if (listener && listener->ref && !listener->ref.Expired()) {
-    auto position = std::find(this->listeners.begin(), this->listeners.end(), WeakHandle<IScriptable>(listener));
+    auto* target = listener.GetPtr();
+    auto position = std::find_if(this->listeners.begin(), this->listeners.end(),
+                                 [target](const WeakHandle<ISerializable>& stored) {
+                                   return stored.instance == target;
+                                 });
     if (position != this->listeners.end())
       this->listeners.erase(position);
   }
