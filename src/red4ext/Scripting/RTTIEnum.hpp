@@ -28,7 +28,9 @@ public:
 
     inline static void Register()
     {
-        RED4ext::RTTIRegistrator::Add(&OnRegisterRTTI, &OnPostRegisterRTTI);
+        auto* rtti = RED4ext::CRTTISystem::Get();
+        rtti->AddRegisterCallback(&OnRegisterRTTI);
+        rtti->AddPostRegisterCallback(&OnPostRegisterRTTI);
     }
 
 private:

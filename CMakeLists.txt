@@ -32,6 +32,12 @@ find_package(RedLib)
 configure_red4ext(src/red4ext)
 # configure_red4ext_addresses(Addresses.hpp)
 
+# Prefer local SDK shims (handcrafted natives + Generated overrides) over WopsS stubs.
+target_include_directories(${MOD_SLUG}.dll
+  BEFORE PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/red4ext/sdk_shim
+)
+
 target_include_directories(${MOD_SLUG}.dll
   PUBLIC
     ${MOD_SOURCE_DIR}/include

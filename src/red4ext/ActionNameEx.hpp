@@ -9,7 +9,8 @@ struct ActionNameEx : Red::ink::ActionName
 {
     Red::CName ToName()
     {
-        return this->name;
+        // inkActionName stores CName at 0x40; generated stub only exposes padding.
+        return *reinterpret_cast<Red::CName*>(this->unk40);
     }
 };
 

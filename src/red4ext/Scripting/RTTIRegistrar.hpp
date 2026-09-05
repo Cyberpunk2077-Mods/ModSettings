@@ -15,7 +15,7 @@ namespace Engine
 class RTTIRegistrar
 {
 public:
-    using CallbackFunc = RED4ext::RTTIRegistrator::CallbackFunc;
+    using CallbackFunc = void (*)();
 
     RTTIRegistrar(CallbackFunc aRegFunc, CallbackFunc aBuildFunc);
 

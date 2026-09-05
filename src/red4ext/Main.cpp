@@ -1,10 +1,7 @@
-#include "RED4ext/RTTISystem.hpp"
-#include "Red/TypeInfo/Registrar.hpp"
 #include "Utils.hpp"
 #include <RED4ext/Common.hpp>
 #include <Windows.h>
 #include <stdio.h>
-
 
 #include "ModSettings.hpp"
 
@@ -14,8 +11,8 @@
 #include <CNames.hpp>
 
 namespace ModSettings {
-const RED4ext::Sdk *sdk;
-RED4ext::PluginHandle pluginHandle;
+const RED4ext::v1::Sdk *sdk;
+RED4ext::v1::PluginHandle pluginHandle;
 } // namespace ModSettings
 
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
@@ -27,10 +24,10 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
   return true;
 }
 
-RED4EXT_C_EXPORT bool RED4EXT_CALL Main(RED4ext::PluginHandle aHandle, RED4ext::EMainReason aReason,
-                                        const RED4ext::Sdk *aSdk) {
+RED4EXT_C_EXPORT bool RED4EXT_CALL Main(RED4ext::v1::PluginHandle aHandle, RED4ext::v1::EMainReason aReason,
+                                        const RED4ext::v1::Sdk *aSdk) {
   switch (aReason) {
-  case RED4ext::EMainReason::Load: {
+  case RED4ext::v1::EMainReason::Load: {
     ModSettings::sdk = aSdk;
     ModSettings::pluginHandle = aHandle;
 
@@ -69,7 +66,7 @@ RED4EXT_C_EXPORT bool RED4EXT_CALL Main(RED4ext::PluginHandle aHandle, RED4ext::
 
     break;
   }
-  case RED4ext::EMainReason::Unload: {
+  case RED4ext::v1::EMainReason::Unload: {
     aSdk->logger->Info(aHandle, "Shutting down");
     ModModuleFactory::GetInstance().Unload(aSdk, aHandle);
     break;
@@ -79,13 +76,12 @@ RED4EXT_C_EXPORT bool RED4EXT_CALL Main(RED4ext::PluginHandle aHandle, RED4ext::
   return true;
 }
 
-RED4EXT_C_EXPORT void RED4EXT_CALL Query(RED4ext::PluginInfo *aInfo) {
+RED4EXT_C_EXPORT void RED4EXT_CALL Query(RED4ext::v1::PluginInfo *aInfo) {
   aInfo->name = L"Mod Settings";
   aInfo->author = L"Jack Humbert";
-  aInfo->version = RED4EXT_SEMVER(MOD_VERSION_MAJOR, MOD_VERSION_MINOR, MOD_VERSION_PATCH);
-  // aInfo->runtime = RED4EXT_RUNTIME_LATEST;
-  aInfo->runtime = RED4EXT_RUNTIME_INDEPENDENT;
-  aInfo->sdk = RED4EXT_SDK_LATEST;
+  aInfo->version = RED4EXT_V1_SEMVER(MOD_VERSION_MAJOR, MOD_VERSION_MINOR, MOD_VERSION_PATCH);
+  aInfo->runtime = RED4EXT_V1_RUNTIME_VERSION_INDEPENDENT;
+  aInfo->sdk = RED4EXT_V1_SDK_VERSION_CURRENT;
 }
 
-RED4EXT_C_EXPORT uint32_t RED4EXT_CALL Supports() { return RED4EXT_API_VERSION_LATEST; }
+RED4EXT_C_EXPORT uint32_t RED4EXT_CALL Supports() { return RED4EXT_API_VERSION_1; }

@@ -8,8 +8,8 @@ struct Manager;
 
 namespace ModSettings {
 
-extern const Sdk *sdk;
-extern PluginHandle pluginHandle;
+extern const RED4ext::v1::Sdk *sdk;
+extern RED4ext::v1::PluginHandle pluginHandle;
 
 struct ScriptData;
 

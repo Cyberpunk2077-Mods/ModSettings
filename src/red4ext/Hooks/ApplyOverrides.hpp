@@ -3,6 +3,7 @@
 #include <RED4ext/RED4ext.hpp>
 #include <RED4ext/CName.hpp>
 #include <RED4ext/CString.hpp>
+#include <RED4ext/Map.hpp>
 #include <RED4ext/Scripting/Natives/Generated/EInputKey.hpp>
 
 using namespace RED4ext;
