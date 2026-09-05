@@ -11,6 +11,7 @@
 //#include <detours.h>
 
 #include <RED4ext/RED4ext.hpp>
+#include <RED4ext/InstanceType.hpp>
 //#include <spdlog/spdlog.h>
 
 #include <RED4ext/UniRelocFunc.hpp>

@@ -1,6 +1,7 @@
 #pragma once
 #include "RED4ext/CName.hpp"
 #include <RED4ext/Common.hpp>
+#include <RED4ext/InstanceType.hpp>
 #include <RED4ext/Scripting/Natives/userRuntimeSettingsVar.hpp>
 
 namespace ModSettings {

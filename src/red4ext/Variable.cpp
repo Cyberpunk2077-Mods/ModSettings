@@ -160,7 +160,7 @@ bool ModVariable::CreateRuntimeVariable(const Variable &var) {
 
 IModConfigVar * ModVariable::ToConfigVar() const {
   if (this->runtimeVar) {
-    auto configVar = this->configVarType->CreateInstance<IModConfigVar*>();
+    auto configVar = reinterpret_cast<IModConfigVar*>(this->configVarType->CreateInstance());
     configVar->SetRuntime(this->runtimeVar);
     return configVar;
   } else {
@@ -214,7 +214,7 @@ void ModClass::RegisterCallback(std::shared_ptr<runtime_class_callback_t> &callb
 
 void ModClass::SetDefaultValue(CName propertyName, ScriptInstance* value) const {
   if (this->type) {
-      for (auto i = 0; i < this->type->defaults.keys.size; i++) {
+      for (auto i = 0; i < this->type->defaults.keys.Size(); i++) {
         if (this->type->defaults.keys[i] == propertyName) {
           // sdk->logger->InfoF(pluginHandle, "Loaded %s.%s", this->name.ToString(), propertyName.ToString());
           auto propType = this->type->defaults.values[i]->GetType();
@@ -376,7 +376,7 @@ void ModSettingsVariable::SetRequestedValues() {
   auto classType = RED4ext::CRTTISystem::Get()->GetClass(className);
   if (classType) {
     auto valuePtr = runtimeVar->GetAcceptedValue();
-    for (auto i = 0; i < classType->defaults.keys.size; i++) {
+    for (auto i = 0; i < classType->defaults.keys.Size(); i++) {
       if (classType->defaults.keys[i] == runtimeVar->name) {
         sdk->logger->InfoF(pluginHandle, "Loaded %s.%s", className.ToString(), runtimeVar->name.ToString());
         auto propType = classType->defaults.values[i]->GetType();
@@ -396,7 +396,7 @@ void ModSettingsVariable::SetRequestedValues() {
 }
 
 Handle<RED4ext::user::SettingsVar> ModSettingsVariable::CreateConfigVar() {
-  auto configVar = this->configVarType->CreateInstance<RED4ext::user::SettingsVar*>();
+  auto configVar = reinterpret_cast<RED4ext::user::SettingsVar*>(this->configVarType->CreateInstance());
   configVar->runtimeVar = this->runtimeVar;
   auto handle = Handle(configVar);
   handle.refCount->IncRef();

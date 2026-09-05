@@ -10,11 +10,7 @@ std::wstring ToWString(const char* aText);
 
 #include "RED4ext/CName.hpp"
 #include <RED4ext/RED4ext.hpp>
-
-namespace RED4ext
-{
-using ScriptInstance = void*;
-}
+#include <RED4ext/InstanceType.hpp>
 
 template<typename T>
 static void RedTypeFromString(T * pointer, const RED4ext::CString& str) {

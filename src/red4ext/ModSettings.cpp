@@ -413,7 +413,7 @@ void ModSettings::NotifyListeners() {
         //   // args.emplace_back(RED4ext::CRTTISystem::Get()->GetType("Bool"), &changesRequested);
         //   RED4ext::ExecuteFunction(instance, func, nullptr, changesRequested);
         // } else {
-          RED4ext::ExecuteFunction(instance, func, nullptr);
+          RED4ext::ExecuteFunction(instance.GetPtr(), func, nullptr);
         // }
       }
     } else {
@@ -431,14 +431,14 @@ void ModSettings::NotifyListenersRequested(CName aGroupPath, CName aVarName) {
       auto instance = listener.Lock();
       auto func = instance->GetType()->GetFunction("OnModVariableChangeRequested");
     
-      if (func) {
-        // RED4ext::StackArgs_t args;
-        // RED4ext::CName groupPath = aGroupPath;
-        // RED4ext::CName varName = aVarName;
-        // args.emplace_back(RED4ext::CRTTISystem::Get()->GetType("CName"), &groupPath);
-        // args.emplace_back(RED4ext::CRTTISystem::Get()->GetType("CName"), &varName);
-        RED4ext::ExecuteFunction(instance, func, nullptr, aGroupPath, aVarName);
-      }
+        if (func) {
+          CName groupPath = aGroupPath;
+          CName varName = aVarName;
+          StackArgs_t args;
+          args.emplace_back(nullptr, &groupPath);
+          args.emplace_back(nullptr, &varName);
+          RED4ext::ExecuteFunction(instance.GetPtr(), func, nullptr, args);
+        }
     } else {
       // remove?
     }
@@ -454,14 +454,14 @@ void ModSettings::NotifyListenersAccepted(CName aGroupPath, CName aVarName) {
       auto instance = listener.Lock();
       auto func = instance->GetType()->GetFunction("OnModVariableChangeAccepted");
     
-      if (func) {
-        // RED4ext::StackArgs_t args;
-        // RED4ext::CName groupPath = aGroupPath;
-        // RED4ext::CName varName = aVarName;
-        // args.emplace_back(RED4ext::CRTTISystem::Get()->GetType("CName"), &groupPath);
-        // args.emplace_back(RED4ext::CRTTISystem::Get()->GetType("CName"), &varName);
-        RED4ext::ExecuteFunction(instance, func, nullptr, aGroupPath, aVarName);
-      }
+        if (func) {
+          CName groupPath = aGroupPath;
+          CName varName = aVarName;
+          StackArgs_t args;
+          args.emplace_back(nullptr, &groupPath);
+          args.emplace_back(nullptr, &varName);
+          RED4ext::ExecuteFunction(instance.GetPtr(), func, nullptr, args);
+        }
     } else {
       // remove?
     }
