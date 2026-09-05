@@ -1,3 +1,21 @@
 localization:
   onscreens:
+    ar-ar: base\localization\ar-ar\onscreens\mod_settings.json
+    cz-cz: base\localization\cz-cz\onscreens\mod_settings.json
+    de-de: base\localization\de-de\onscreens\mod_settings.json
     en-us: base\localization\en-us\onscreens\mod_settings.json
+    es-es: base\localization\es-es\onscreens\mod_settings.json
+    es-mx: base\localization\es-mx\onscreens\mod_settings.json
+    fr-fr: base\localization\fr-fr\onscreens\mod_settings.json
+    hu-hu: base\localization\hu-hu\onscreens\mod_settings.json
+    it-it: base\localization\it-it\onscreens\mod_settings.json
+    jp-jp: base\localization\jp-jp\onscreens\mod_settings.json
+    kr-kr: base\localization\kr-kr\onscreens\mod_settings.json
+    pl-pl: base\localization\pl-pl\onscreens\mod_settings.json
+    pt-br: base\localization\pt-br\onscreens\mod_settings.json
+    ru-ru: base\localization\ru-ru\onscreens\mod_settings.json
+    th-th: base\localization\th-th\onscreens\mod_settings.json
+    tr-tr: base\localization\tr-tr\onscreens\mod_settings.json
+    ua-ua: base\localization\ua-ua\onscreens\mod_settings.json
+    zh-cn: base\localization\zh-cn\onscreens\mod_settings.json
+    zh-tw: base\localization\zh-tw\onscreens\mod_settings.json
