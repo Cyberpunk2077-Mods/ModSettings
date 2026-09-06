@@ -18,7 +18,7 @@
                                                                              {
                                                                                  "$type":  "localizationPersistenceOnScreenEntry",
                                                                                  "secondaryKey":  "UI-Labels-ModSettings",
-                                                                                 "femaleVariant":  "Mod 设置"
+                                                                                 "femaleVariant":  "模组设置"
                                                                              },
                                                                              {
                                                                                  "$type":  "localizationPersistenceOnScreenEntry",
@@ -33,7 +33,7 @@
                                                                              {
                                                                                  "$type":  "localizationPersistenceOnScreenEntry",
                                                                                  "secondaryKey":  "ModSettings-LanguageDescription",
-                                                                                 "femaleVariant":  "Mod Settings 菜单语言。自动跟随游戏界面语言。"
+                                                                                 "femaleVariant":  "模组设置菜单语言。自动跟随游戏界面语言。"
                                                                              },
                                                                              {
                                                                                  "$type":  "localizationPersistenceOnScreenEntry",
