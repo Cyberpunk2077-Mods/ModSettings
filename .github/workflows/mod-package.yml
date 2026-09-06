@@ -33,6 +33,9 @@ jobs:
           $version = if ($env:GITHUB_REF_TYPE -eq 'tag') { $env:GITHUB_REF_NAME.TrimStart('v') } else { $stable = @(git tag -l --sort=-v:refname | Where-Object { $_ -match '^v?\d+\.\d+\.\d+$' }); $any = @(git tag -l --sort=-v:refname | Where-Object { $_ -match '^v?\d' }); $tag = $(@($stable + $any) | Select-Object -First 1); if ($tag) { $tag.TrimStart('v') } else { '0.0.0' } }
           $suffix = if ($env:GITHUB_REF_TYPE -eq 'tag') { '' } else { "_$(Get-Date -Format 'yyyy.M').$((git rev-list --count --since="$(Get-Date -Day 1 -Format yyyy-MM-dd)" HEAD))" }
           $artifact = "${env:MOD_NAME}_v${version}_${env:TARGET_PLATFORM}_${env:TARGET_ARCH}${suffix}.zip"
+          foreach ($required in @('game_dir/red4ext/plugins/mod_settings/mod_settings.dll', 'game_dir/red4ext/plugins/mod_settings/ModSettings.archive', 'game_dir/red4ext/plugins/mod_settings/ModSettings.archive.xl', 'game_dir/red4ext/plugins/mod_settings/module.reds', 'game_dir/red4ext/plugins/mod_settings/packed.reds')) {
+            if (-not (Test-Path -LiteralPath $required)) { throw "Missing package input: $required" }
+          }
           Compress-Archive -Path game_dir/* -DestinationPath $artifact -CompressionLevel Optimal -Force
           "artifact=$artifact" >> $env:GITHUB_OUTPUT
       - uses: actions/upload-artifact@v4
