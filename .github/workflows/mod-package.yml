@@ -22,6 +22,9 @@ jobs:
       - uses: ilammy/msvc-dev-cmd@v1.13.0
         with:
           arch: amd64
+      - name: Verify localization archive is current
+        shell: pwsh
+        run: ./tools/Build-LocalizationArchive.ps1 -VerifyOnly
       - name: Build windows_x64
         run: |
           cmake -S . -B build -A x64 -DCMAKE_CI_BUILD=ON -DGITHUB_ENV="$env:GITHUB_ENV"

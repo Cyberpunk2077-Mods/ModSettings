@@ -1,29 +1,51 @@
 {
-  "Header": {
-    "WKitJsonVersion": "0.0.3",
-    "GameVersion": 1600,
-    "DataType": "CR2W"
-  },
-  "Data": {
-    "Version": 195,
-    "BuildVersion": 0,
-    "RootChunk": {
-      "$type": "JsonResource",
-      "cookingPlatform": "PLATFORM_PC",
-      "root": {
-        "HandleId": "0",
-        "Data": {
-          "$type": "localizationPersistenceOnScreenEntries",
-          "entries": [
-            {
-              "$type": "localizationPersistenceOnScreenEntry",
-              "secondaryKey": "UI-Labels-ModSettings",
-              "femaleVariant": "모드 설정"
-            }
-          ]
-        }
-      }
-    },
-    "EmbeddedFiles": []
-  }
+    "Header":  {
+                   "WKitJsonVersion":  "0.0.3",
+                   "GameVersion":  1600,
+                   "DataType":  "CR2W"
+               },
+    "Data":  {
+                 "Version":  195,
+                 "BuildVersion":  0,
+                 "RootChunk":  {
+                                   "$type":  "JsonResource",
+                                   "cookingPlatform":  "PLATFORM_PC",
+                                   "root":  {
+                                                "HandleId":  "0",
+                                                "Data":  {
+                                                             "$type":  "localizationPersistenceOnScreenEntries",
+                                                             "entries":  [
+                                                                             {
+                                                                                 "$type":  "localizationPersistenceOnScreenEntry",
+                                                                                 "secondaryKey":  "UI-Labels-ModSettings",
+                                                                                 "femaleVariant":  "모드 설정"
+                                                                             },
+                                                                             {
+                                                                                 "$type":  "localizationPersistenceOnScreenEntry",
+                                                                                 "secondaryKey":  "ModSettings-NoModsAvailable",
+                                                                                 "femaleVariant":  "사용 가능한 모드가 없습니다"
+                                                                             },
+                                                                             {
+                                                                                 "$type":  "localizationPersistenceOnScreenEntry",
+                                                                                 "secondaryKey":  "ModSettings-UILanguage",
+                                                                                 "femaleVariant":  "UI 언어"
+                                                                             },
+                                                                             {
+                                                                                 "$type":  "localizationPersistenceOnScreenEntry",
+                                                                                 "secondaryKey":  "ModSettings-LanguageDescription",
+                                                                                 "femaleVariant":  "Mod Settings 메뉴 언어. 자동은 게임 인터페이스 언어를 따릅니다."
+                                                                             },
+                                                                             {
+                                                                                 "$type":  "localizationPersistenceOnScreenEntry",
+                                                                                 "secondaryKey":  "ModSettings-Auto",
+                                                                                 "femaleVariant":  "자동 (게임 언어)"
+                                                                             }
+                                                                         ]
+                                                         }
+                                            }
+                               },
+                 "EmbeddedFiles":  [
+
+                                   ]
+             }
 }

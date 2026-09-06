@@ -6,7 +6,7 @@ private func PopulateMenuItemList() -> Void {
         this.AddMenuItem(GetLocalizedText("UI-ScriptExports-LoadGame0"), n"OnSwitchToLoadGame");
     };
     this.AddMenuItem(GetLocalizedText("UI-Labels-Settings"), n"OnSwitchToSettings");
-    this.AddMenuItem(GetLocalizedText("UI-Labels-ModSettings"), n"OnSwitchToModSettings");
+    this.AddMenuItem(ModSettingsLocalization.Text(n"UI-Labels-ModSettings"), n"OnSwitchToModSettings");
     this.AddMenuItem(GetLocalizedText("UI-Labels-Credits"), n"OnCreditsPicker");
     if TrialHelper.IsInPS5TrialMode() {
         this.AddMenuItem(GetLocalizedText("UI-Notifications-Ps5TrialBuyMenuItem"), n"OnBuyGame");

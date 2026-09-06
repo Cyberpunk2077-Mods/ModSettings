@@ -35,9 +35,12 @@ public class ModStngsMainGameController extends gameuiSettingsMenuGameController
   private let m_resetSettingsRequest: Bool;
   private let m_isDlcSettings: Bool;
   private let m_selectorCtrl: wref<ListController>;
+  private let m_uiLanguage: String;
 
   protected cb func OnInitialize() -> Void {
     ModSettings.GetInstance().isActive = true;
+    this.m_uiLanguage = ModSettingsLocalization.GetLanguage();
+    ModSettingsLocalization.LocalizeChrome(this.GetRootWidget());
     inkWidgetRef.SetVisible(this.m_hdrButton, false);
     inkWidgetRef.SetVisible(this.m_controllerButton, false);
     inkWidgetRef.SetVisible(this.m_brightnessButton, false);
@@ -76,6 +79,11 @@ public class ModStngsMainGameController extends gameuiSettingsMenuGameController
   public func OnModSettingsChange() -> Void {
     this.CheckButtons();
     this.PopulateSettingsData();
+    if NotEquals(this.m_uiLanguage, ModSettingsLocalization.GetLanguage()) {
+      this.m_uiLanguage = ModSettingsLocalization.GetLanguage();
+      ModSettingsLocalization.LocalizeChrome(this.GetRootWidget());
+      this.PopulateCategories(this.m_selectorCtrl.GetToggledIndex());
+    };
     this.PopulateCategorySettingsOptions(-1);
     this.RefreshInputIcons();
   }
@@ -291,10 +299,7 @@ public class ModStngsMainGameController extends gameuiSettingsMenuGameController
         curCategory = this.m_data[i];
         if !curCategory.isEmpty {
             newData = new ListItemData();
-            newData.label = GetLocalizedTextByKey(curCategory.label);
-            if StrLen(newData.label) == 0 {
-                newData.label = ToString(curCategory.label);
-            };
+            newData.label = ModSettingsLocalization.Text(curCategory.label);
             this.m_selectorCtrl.PushData(newData);
         };
         i += 1;
@@ -507,14 +512,7 @@ public class ModStngsMainGameController extends gameuiSettingsMenuGameController
     let currentItem = target.GetController() as SettingsSelectorController;
     if IsDefined(currentItem) {
       descriptionName = currentItem.GetDescription();
-      description = GetLocalizedTextByKey(descriptionName);
-      if StrLen(description) == 0 {
-          if !Equals(descriptionName, n"None") {
-            description = ToString(descriptionName);
-          } else {
-            description = "";
-          }
-      };
+      description = ModSettingsLocalization.Text(descriptionName);
       updatePolicy = currentItem.GetVarUpdatePolicy();
       if Equals(updatePolicy, ConfigVarUpdatePolicy.ConfirmationRequired) {
         params = new inkTextParams();

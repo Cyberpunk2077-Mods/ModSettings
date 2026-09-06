@@ -1,0 +1,21 @@
+{
+    "ar-ar":  "العربية (ar-ar)",
+    "cz-cz":  "Čeština (cz-cz)",
+    "de-de":  "Deutsch (de-de)",
+    "en-us":  "English (en-us)",
+    "es-es":  "Español (es-es)",
+    "es-mx":  "Español latinoamericano (es-mx)",
+    "fr-fr":  "Français (fr-fr)",
+    "hu-hu":  "Magyar (hu-hu)",
+    "it-it":  "Italiano (it-it)",
+    "jp-jp":  "日本語 (jp-jp)",
+    "kr-kr":  "한국어 (kr-kr)",
+    "pl-pl":  "Polski (pl-pl)",
+    "pt-br":  "Português do Brasil (pt-br)",
+    "ru-ru":  "Русский (ru-ru)",
+    "th-th":  "ไทย (th-th)",
+    "tr-tr":  "Türkçe (tr-tr)",
+    "ua-ua":  "Українська (ua-ua)",
+    "zh-cn":  "简体中文 (zh-cn)",
+    "zh-tw":  "繁體中文 (zh-tw)"
+}

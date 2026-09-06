@@ -36,10 +36,7 @@ public class ModStngsSelectorControllerListInt extends SettingsSelectorControlle
     if !value.ListHasDisplayValues() {
       inkTextRef.SetText(this.m_ValueText, IntToString(value.GetValue()));
     } else {
-      let text = GetLocalizedTextByKey(value.GetDisplayValue(index));
-      if StrLen(text) == 0 {
-        text = ToString(value.GetDisplayValue(index));
-      };
+      let text = ModSettingsLocalization.Text(value.GetDisplayValue(index));
       inkTextRef.SetText(this.m_ValueText, text);
     };
     this.SelectDot(index);

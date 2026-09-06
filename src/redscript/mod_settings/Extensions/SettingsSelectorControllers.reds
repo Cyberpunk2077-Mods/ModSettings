@@ -54,18 +54,26 @@ public func Refresh() -> Void {
     let languageProvider: ref<inkLanguageOverrideProvider>;
     let modifiedSymbol: String;
     let text: String;
+    let remaining: String;
+    let placeholder: Int32;
     let updatePolicy: ConfigVarUpdatePolicy;
     let wasModified: Bool;
     let size: Int32 = this.m_SettingsEntry.GetDisplayNameKeysSize();
     if size > 0 {
-      text = NameToString(this.m_SettingsEntry.GetDisplayName());
+      remaining = ModSettingsLocalization.Text(this.m_SettingsEntry.GetDisplayName());
       i = 0;
       while i < size {
-        text = StrReplace(text, "%", GetLocalizedTextByKey(this.m_SettingsEntry.GetDisplayNameKey(i)));
+        placeholder = StrFindFirst(remaining, "%");
+        if placeholder < 0 {
+          break;
+        };
+        text += StrLeft(remaining, placeholder) + ModSettingsLocalization.Text(this.m_SettingsEntry.GetDisplayNameKey(i));
+        remaining = StrMid(remaining, placeholder + 1);
         i += 1;
       };
+      text += remaining;
     } else {
-      text = GetLocalizedTextByKey(this.m_SettingsEntry.GetDisplayName());
+      text = ModSettingsLocalization.Text(this.m_SettingsEntry.GetDisplayName());
     };
     updatePolicy = this.m_SettingsEntry.GetUpdatePolicy();
     if Equals(text, "") {
@@ -84,7 +92,9 @@ public func Refresh() -> Void {
       };
     };
     languageProvider = inkWidgetRef.GetUserData(this.m_LabelText, n"inkLanguageOverrideProvider") as inkLanguageOverrideProvider;
-    languageProvider.SetLanguage(scnDialogLineLanguage.Origin);
+    if IsDefined(languageProvider) {
+      languageProvider.SetLanguage(scnDialogLineLanguage.Origin);
+    };
     inkTextRef.UpdateLanguageResources(this.m_LabelText, false);
     inkTextRef.SetText(this.m_LabelText, text);
     inkWidgetRef.SetVisible(this.m_ModifiedFlag, wasModified);

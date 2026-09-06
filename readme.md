@@ -119,6 +119,49 @@ _For the mod to work with REDmod deployments, the following mod is required:_
 
 ## Development
 
+### Interface language
+
+The Mod Settings tab contains an interface language selector with Auto and all
+19 game languages. Auto follows the game's current interface language. Select a
+language and press Apply to save it in the existing
+`red4ext/plugins/mod_settings/user.ini` configuration. The menu captions and
+category labels refresh after applying the selection; menu entries use it when
+the main, pause, or death menu is rebuilt.
+
+The project supplies translations for its menu/title, empty state, language
+option, description, and Auto option. Language names are shown in their native
+scripts. Game-owned controls, input hints and confirmation messages continue to
+use the game language. Their fonts also use the game's language resources;
+cross-language glyph coverage requires in-game verification.
+
+Third-party mod names, categories, descriptions and enum values resolve through
+the same helper. A mod can provide `My-Key.zh-cn` (and equivalent suffixes) to
+support an explicit menu language. Otherwise the helper falls back to `My-Key`
+in the game language, then to the original literal. Existing registration APIs
+are unchanged. Format labels resolve the template and each parameter separately;
+each `%` consumes one parameter, preserving subsequent placeholders and literal
+percent signs in replacement text. Third-party translations must be supplied by
+their authors.
+
+### Rebuilding localization resources
+
+`src/archiveXL/base/localization` contains the 19 authoritative translation
+files. `src/archiveXL/language-names.json` supplies native language names.
+The build tool creates explicit-language aliases in every language resource,
+converts them to CR2W, and packages them alongside the existing UI assets:
+
+```powershell
+./tools/Build-LocalizationArchive.ps1 -WolvenKit C:/tools/WolvenKit.CLI.exe
+./tools/Build-LocalizationArchive.ps1 -VerifyOnly
+```
+
+Use WolvenKit Console 8.20.0 and its .NET 8 runtime. Commit the rebuilt
+`src/wolvenkit/packed/archive/pc/mod/ModSettings.archive` and
+`src/archiveXL/archive-inputs.sha256` with resource changes. CI checks translation
+key parity, nonempty values, and input/archive hashes before building the DLL.
+The runtime localizes the legacy literal title and empty-state widgets; the
+original binary widget remains editable with the existing WolvenKit workflow.
+
 Running `tools/ModStngs.1sc` on `mod_settings_main.inkwidget` will toggle between using a custom class (`ModStngs` replacing `Settings` in `SettingsMainGameController` and `SettingsSelectorController*`) so the file can be opened & edited in Wolvenkit. If you keep the file open in Wolvenkit, you won't need to convert back, and only run the script after you've saved it in Wolvenkit, before packing.
 
 ## Bugs
