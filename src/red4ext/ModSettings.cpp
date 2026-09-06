@@ -119,9 +119,10 @@ void __fastcall ModSettings::ProcessScriptData(const ScriptData *scriptData) {
       auto mod = self->mods[var->modName];
 
       auto modClassName = CNamePool::Add(var->className);
-      std::shared_lock _(*mod->classes_lock);
+      // Registration mutates the class map. shared_mutex cannot be upgraded
+      // from a shared lock to an exclusive lock by the same thread.
+      std::unique_lock classLock(*mod->classes_lock);
       if (!mod->classes.contains(modClassName)) {
-        std::unique_lock _(*mod->classes_lock);
         mod->classes[modClassName] = new ModClass {
           .name = modClassName,
           .mod = mod
