@@ -1,6 +1,6 @@
 include(FetchContent)
 
-list(APPEND MOD_REQUIREMENTS "RED4ext 1.27.0+")
+list(APPEND MOD_REQUIREMENTS "RED4ext 1.30.0+")
 
 # Runtime RED4ext zip is only for local game_dir_requirements. CI packages the mod itself.
 if(DEFINED CMAKE_CI_BUILD)

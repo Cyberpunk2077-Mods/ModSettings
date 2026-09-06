@@ -7,7 +7,7 @@ if(NOT TARGET ArchiveXL)
   target_include_directories(ArchiveXL INTERFACE deps/archive_xl/support/red4ext)
 endif()
 
-list(APPEND MOD_REQUIREMENTS "ArchiveXL 1.23.0+")
+list(APPEND MOD_REQUIREMENTS "ArchiveXL 1.29.2+")
 
 # Runtime ArchiveXL zip is only for local game_dir_requirements. CI packages the mod itself.
 if(DEFINED CMAKE_CI_BUILD)
@@ -19,7 +19,7 @@ if(NOT DEFINED MOD_ARCHIVE_XL_DEPENDENCY_ADDED)
   if(NOT EXISTS ${MOD_BINARY_DIR}/downloads/archiveXL.zip OR MOD_FORCE_UPDATE_DEPS)
     if(NOT DEFINED MOD_ARCHIVE_XL_DOWNLOAD_URL)
       set(MOD_ARCHIVE_XL_DOWNLOAD_URL
-        "https://github.com/psiberx/cp2077-archive-xl/releases/download/v1.27.1/ArchiveXL-1.27.1.zip")
+        "https://github.com/psiberx/cp2077-archive-xl/releases/download/v1.29.2/ArchiveXL-1.29.2.zip")
     endif()
     file(DOWNLOAD
       ${MOD_ARCHIVE_XL_DOWNLOAD_URL}

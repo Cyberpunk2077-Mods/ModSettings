@@ -6,7 +6,7 @@
 
 ## Installation
 
-[Get the latest release here](https://github.com/jackhumbert/mod_settings/releases) - `packed-v*.zip` in the release contains all of the requirements listed below at their most up-to-date versions (at the time of release). Simply extract it and copy the contents in your game's installation folder.
+[Get the latest release here](https://github.com/jackhumbert/mod_settings/releases). Extract `packed-v*.zip` into the game's installation folder. Install the requirements listed below separately; they are not bundled in the release archive.
 
 If you want to install the mod outside of a release (not recommended), the `build/` folder in the repo contains all of the mod-specific files that you can drag into your game's installation folder.
 
@@ -111,11 +111,19 @@ This example will produce the following results for enum values:
 
 ## Requirements
 
-* [RED4ext](https://github.com/WopsS/RED4ext)
-* [Redscript](https://github.com/jac3km4/redscript)
+* [RED4ext 1.30.0+](https://github.com/WopsS/RED4ext)
+* [ArchiveXL 1.29.2+](https://github.com/psiberx/cp2077-archive-xl)
+* [Redscript 0.5.31+](https://github.com/jac3km4/redscript)
 
 _For the mod to work with REDmod deployments, the following mod is required:_
 * [cybercmd](https://github.com/jac3km4/cybercmd)
+
+If the game stops during startup after installing a mod that depends on Mod
+Settings, first update all three requirements above. A failure to load
+`mod_settings.dll` leaves the `ModSettings` redscript API unavailable, so the
+dependent mod then fails redscript compilation. Check
+`red4ext/logs/red4ext.log` for native plugin load errors and
+`r6/logs/redscript_rCURRENT.log` for missing `ModSettings` types.
 
 ## Development
 
