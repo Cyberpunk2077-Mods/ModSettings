@@ -27,7 +27,7 @@ public:
 
   static void ProcessScriptData(const ScriptData *scriptData);
   static bool GetSettingString(CName, CName, CString *);
-  static void ReadValueFromFile(ScriptProperty *prop, ScriptInstance pointer);
+  static bool ReadValueFromFile(ScriptProperty *prop, ScriptInstance pointer);
 
   template <typename T>
   static void ReadValueFromFile(CName className, CName propertyName,

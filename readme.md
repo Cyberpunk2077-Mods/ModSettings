@@ -127,6 +127,26 @@ dependent mod then fails redscript compilation. Check
 
 ## Development
 
+### Runtime string parsing and regression checks
+
+Game RTTI string parsing is routed through `src/red4ext/GameStringParser.hpp`.
+Cyberpunk 2.31 expects a borrowed pointer-and-length buffer at virtual slot
+`0x70`; the SDK's `CString` declaration is not ABI-compatible with that input.
+Do not replace this adapter with a direct `IType::FromString` call without
+verifying the game's implementation.
+
+From an x64 MSVC developer shell, build and run the isolated adapter test:
+
+```powershell
+cl /EHsc /std:c++17 tools/Test-GameStringParser.cpp /Fe:Test-GameStringParser.exe
+./Test-GameStringParser.exe
+python tools/test_script_packaging.py <cmake.exe-path> <ninja.exe-path>
+```
+
+These checks cover argument layout, failed parsing, and incremental script
+packaging. They do not replace compiling the full plugin and testing game startup.
+CI also retains the matching PDB as a separate artifact keyed by commit SHA.
+
 ### Interface language
 
 The Mod Settings tab contains an interface language selector with Auto and all

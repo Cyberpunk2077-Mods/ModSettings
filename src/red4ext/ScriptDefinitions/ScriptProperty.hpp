@@ -1,4 +1,5 @@
 #pragma once
+#include "GameStringParser.hpp"
 
 #include "Variable.hpp"
 #include <RED4ext/InstanceType.hpp>
@@ -41,8 +42,8 @@ struct ScriptProperty : ScriptDefinition {
     return RED4ext::CRTTISystem::Get()->GetType(this->type->name);
   }
 
-  void FromString(RED4ext::ScriptInstance pointer, const RED4ext::CString& str) const {
-    this->GetType()->FromString(pointer, str);
+  bool FromString(RED4ext::ScriptInstance pointer, const RED4ext::CString& str) const {
+    return Interop::FromString(this->GetType(), pointer, str.c_str(), str.Length());
   }
 
   // ReadProperty(CName)
@@ -68,8 +69,8 @@ struct ScriptProperty : ScriptDefinition {
   template <> uint32_t ReadProperty(const RED4ext::CName &name) const {
     auto str = this->runtimeProperties.Get(name);
     if (str) {
-      uint32_t value;
-      RED4ext::CRTTISystem::Get()->GetType("Uint32")->FromString(&value, *str);
+      uint32_t value{};
+      Interop::ReadValue(RED4ext::CRTTISystem::Get()->GetType("Uint32"), &value, *str);
       return value;
     } else {
       return 0;
@@ -79,8 +80,8 @@ struct ScriptProperty : ScriptDefinition {
   template <> int32_t ReadProperty(const RED4ext::CName &name) const {
     auto str = this->runtimeProperties.Get(name);
     if (str) {
-      int32_t value;
-      RED4ext::CRTTISystem::Get()->GetType("Int32")->FromString(&value, *str);
+      int32_t value{};
+      Interop::ReadValue(RED4ext::CRTTISystem::Get()->GetType("Int32"), &value, *str);
       return value;
     } else {
       return 0;
@@ -134,14 +135,14 @@ struct ScriptProperty : ScriptDefinition {
   template <> void ReadProperty<uint32_t>(const RED4ext::CName &name, uint32_t *pointer) const {
     auto str = this->runtimeProperties.Get(name);
     if (str && pointer) {
-      RED4ext::CRTTISystem::Get()->GetType("Uint32")->FromString(pointer, *str);
+      Interop::ReadValue(RED4ext::CRTTISystem::Get()->GetType("Uint32"), pointer, *str);
     }
   }
 
   template <> void ReadProperty<int32_t>(const RED4ext::CName &name, int32_t *pointer) const {
     auto str = this->runtimeProperties.Get(name);
     if (str && pointer) {
-      RED4ext::CRTTISystem::Get()->GetType("Int32")->FromString(pointer, *str);
+      Interop::ReadValue(RED4ext::CRTTISystem::Get()->GetType("Int32"), pointer, *str);
     }
   }
 
@@ -149,14 +150,14 @@ struct ScriptProperty : ScriptDefinition {
   // template <> void ReadProperty<RED4ext::EInputKey>(const RED4ext::CName &name, int32_t *pointer) const {
   //   auto str = this->runtimeProperties.Get(name);
   //   if (str && pointer) {
-  //     RED4ext::CRTTISystem::Get()->GetType("EInputKey")->FromString(pointer, *str);
+  //     Interop::ReadValue(RED4ext::CRTTISystem::Get()->GetType("EInputKey"), pointer, *str);
   //   }
   // }
 
   template <> void ReadProperty<float>(const RED4ext::CName &name, float *pointer) const {
     auto str = this->runtimeProperties.Get(name);
     if (str && pointer) {
-      RED4ext::CRTTISystem::Get()->GetType("Float")->FromString(pointer, *str);
+      Interop::ReadValue(RED4ext::CRTTISystem::Get()->GetType("Float"), pointer, *str);
     }
   }
 
@@ -185,10 +186,11 @@ struct ScriptProperty : ScriptDefinition {
 
   template <typename T> void ReadProperty(const RED4ext::CName &name, T *pointer, const T fallback) const {
     auto str = this->runtimeProperties.Get(name);
-    if (str && pointer) {
-      this->FromString(pointer, *str);
-    } else if (pointer) {
-      *pointer = fallback;
+    if (!pointer) return;
+    *pointer = fallback;
+    if (str) {
+      T parsed = fallback;
+      if (this->FromString(&parsed, *str)) *pointer = parsed;
     }
   }
 
@@ -202,10 +204,8 @@ struct ScriptProperty : ScriptDefinition {
     }
   }
 
-  void ReadDefaultValue(RED4ext::ScriptInstance pointer) const {
-    if (this->defaultValues.Size()) {
-      this->FromString(pointer, this->defaultValues[0]);
-    }
+  bool ReadDefaultValue(RED4ext::ScriptInstance pointer) const {
+    return this->defaultValues.Size() && this->FromString(pointer, this->defaultValues[0]);
   }
 
   RED4ext::CProperty *rttiProperty;

@@ -55,11 +55,10 @@ configure_archives(src/wolvenkit/packed/archive/pc/mod/ModSettings.archive src/a
 
 configure_redscript(src/redscript)
 
-# CMake's custom redscript linker rules do not populate the game directory on
-# every generator. Materialize both scripts after the DLL build so release
-# packages always contain the files loaded by Main.cpp.
-add_custom_command(
-  TARGET ${MOD_SLUG}.dll POST_BUILD
+# Run after both legacy script targets, independently of DLL relinking.
+# Always materialize: also captures added/removed .reds files during incremental builds.
+add_custom_target(${MOD_SLUG}.scripts ALL
+  COMMAND ${CMAKE_COMMAND} -E make_directory "${MOD_GAME_DIR_RED4EXT_MOD_DIR}"
   COMMAND ${CMAKE_COMMAND}
     "-DCOMMENT_SLUG=//"
     "-DGLOB_EXT=reds"
@@ -71,7 +70,10 @@ add_custom_command(
     "${CMAKE_CURRENT_BINARY_DIR}/${MOD_SLUG}.module.reds"
     "${MOD_GAME_DIR_RED4EXT_MODULE_FILE}"
   COMMENT "Materializing REDscript package files"
+  VERBATIM
 )
+add_dependencies(${MOD_SLUG}.scripts ${MOD_SLUG}.packed.reds ${MOD_SLUG}.module.reds)
+add_dependencies(${MOD_SLUG} ${MOD_SLUG}.scripts)
 
 configure_folder_file(readme.md)
 configure_folder_file(license.md)

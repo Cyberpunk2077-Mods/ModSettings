@@ -10,11 +10,11 @@ namespace ModSettings {
 
 template <typename T> struct RuntimeVariable : public IRuntimeVariable {
   RuntimeVariable(ScriptProperty *prop) : IRuntimeVariable(prop) {
-    T _value, _defaultValue;
-    prop->ReadDefaultValue(&_defaultValue);
+    T _value{}, _defaultValue{};
+    if (!prop->ReadDefaultValue(&_defaultValue)) _defaultValue = T{};
     SetDefaultValue(&_defaultValue);
     _value = _defaultValue;
-    ModSettings::ReadValueFromFile(prop, &_value);
+    if (!ModSettings::ReadValueFromFile(prop, &_value)) _value = _defaultValue;
     LoadValue(&_value);
   }
 

@@ -25,6 +25,20 @@ jobs:
       - name: Verify localization archive is current
         shell: pwsh
         run: ./tools/Build-LocalizationArchive.ps1 -VerifyOnly
+      - name: Test game string parser ABI
+        shell: pwsh
+        run: |
+          cl /nologo /EHsc /std:c++17 /W4 /WX tools/Test-GameStringParser.cpp /Fe:Test-GameStringParser.exe
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          ./Test-GameStringParser.exe
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Test incremental script packaging
+        shell: pwsh
+        run: |
+          $cmake = (Get-Command cmake -ErrorAction Stop).Source
+          $ninja = (Get-Command ninja -ErrorAction Stop).Source
+          python tools/test_script_packaging.py $cmake $ninja
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Build windows_x64
         run: |
           cmake -S . -B build -A x64 -DCMAKE_CI_BUILD=ON -DGITHUB_ENV="$env:GITHUB_ENV"
@@ -45,6 +59,12 @@ jobs:
         with:
           name: ${{ steps.meta.outputs.artifact }}
           path: ${{ steps.meta.outputs.artifact }}
+          if-no-files-found: error
+      - name: Upload matching debug symbols
+        uses: actions/upload-artifact@v4
+        with:
+          name: ModSettings-symbols-${{ github.sha }}
+          path: game_dir_debug/red4ext/plugins/mod_settings/mod_settings.pdb
           if-no-files-found: error
       - name: Create draft release
         if: github.ref_type == 'tag'
